@@ -1,21 +1,31 @@
-from lib.Request import Request
+from lib.RequestValidator import RequestValidator
 
-class Test(Request):
+class Test(RequestValidator):
 
     rules = {
-        'method' : 'GET',
-        'protocol' : 'https',
-        'dns' : 'api.coupondunia.in',
-        'path' : '/timestamp',
-        'custom_status_header' : 'X-API-ErrorCode',
-        'headers' : None,
-        'validate_response' : True,
-        'validate_result' : False,
-        'response' : {
-            'time' : '\d+',
+        'request' : {
+            'method' : 'GET',
+            'protocol' : 'HTTP',
+            'dns' : 'local.in',
+            'path' : '/partner/public/timestamp',
+            'headers' : None,
+            'content_type': None
+        },
+        'response':{
+            'content_type': 'json', # json, xml
+            'expected_response' : [ # for response list, for result dict
+                {
+                    'timestamp' : '\d+',
+                }
+            ]
         }
         # 'content_type' : 'application/json'
     }
+
+
+    def __init__(self, configuration, logger):
+        super().__init__(configuration, logger)
+
 
 
 

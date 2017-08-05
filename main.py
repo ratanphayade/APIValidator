@@ -4,64 +4,63 @@ import os
 import yaml
 import logging
 import logging.config
-from Endpoints.Test import Test
+from endpoints.Test import Test
 
 
 class APIValidator:
 
-    _PATH = 'config/'
+    __CONFIG_BASE_PATH = 'config/'
 
-    logger = None
+    __logger = None
 
-    configuration = {}
+    __configuration = {}
 
     def __init__(self):
-        self.configuration = self.load_configuration('main.conf')
-        if not self.configuration:
+        self.__configuration = self.load_configuration('main.conf')
+        if not self.__configuration:
             print('Failed to load initial configuration')
             exit()
         self.initialize_logger()
 
     def load_configuration(self, _file_):
         """
-        This is an example of Google style.
+        This will load the configuration specified by the file passed
+        If the path exist then only the configuration is returned
+        Configuration file should be in YAML format
+        All the configuration are loaded from  config folder
 
         Args:
-            param1: This is the first param.
-            param2: This is a second param.
+            _file_: configuration file name to load.
 
         Returns:
-            This is a description of what is returned.
-
-        Raises:
-            KeyError: Raises an exception.
+            Dictionary format of configuration.
         """
 
-        if os.path.exists(self._PATH + _file_):
-            with open(self._PATH + _file_, 'rt') as conf:
+        if os.path.exists(self.__CONFIG_BASE_PATH + _file_):
+            with open(self.__CONFIG_BASE_PATH + _file_, 'rt') as conf:
                 return yaml.safe_load(conf.read())
         return {}
 
     def initialize_logger(self):
         self.initialize_advance_logger()
-        if not self.logger:
+        if not self.__logger:
             self.initialize_basic_logger()
 
     def initialize_basic_logger(self):
         logging.basicConfig(level=logging.DEBUG)
-        self.logger = logging.getLogger(__name__)
+        self.__logger = logging.getLogger(__name__)
 
     def initialize_advance_logger(self):
-        if 'logger' not in self.configuration:
+        if 'logger' not in self.__configuration:
             return
 
-        config = self.load_configuration(self.configuration['logger'])
+        config = self.load_configuration(self.__configuration['logger'])
         if config:
             logging.config.dictConfig(config)
-            self.logger = logging.getLogger('main')
+            self.__logger = logging.getLogger('main')
 
     def execute(self):
-        Test().run()
+        Test(self.__configuration, logging).run()
 
 
 if __name__ == '__main__':
