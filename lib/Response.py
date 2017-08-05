@@ -16,7 +16,7 @@ class Response(Header):
 
     def validate_response(self, response):
         print(response)
-        self.check_for_matching_format(
+        self.validate_response_format(
             self.__response_params['expected_response'], 
             response
         )

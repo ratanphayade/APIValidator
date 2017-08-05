@@ -5,19 +5,17 @@ class Test(RequestValidator):
     rules = {
         'request' : {
             'method' : 'GET',
-            'protocol' : 'HTTP',
-            'dns' : 'local.in',
-            'path' : '/partner/public/timestamp',
+            'protocol' : 'HTTPS',
+            'dns' : 'api.coupondunia.in',
+            'path' : '/timestamp',
             'headers' : None,
             'content_type': None
         },
         'response':{
             'content_type': 'json', # json, xml
-            'expected_response' : [ # for response list, for result dict
-                {
+            'expected_response' : {
                     'timestamp' : '\d+',
-                }
-            ]
+            }
         }
         # 'content_type' : 'application/json'
     }

@@ -17,7 +17,7 @@ class RequestValidator(Validator):
 
 
     def validate_request_params(self):
-        Validator().check_for_matching_format(self.REQUIRED_ATTRIBUTES, self.rules)
+        Validator().validate_rule(self.REQUIRED_ATTRIBUTES, self.rules)
 
 
 
