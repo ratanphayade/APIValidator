@@ -21,11 +21,7 @@ class RequestValidator(Request):
 
 
     def run(self):
-        response = Request(
-            self._configuration, 
-            self._logger, 
-            self.rules['request']
-        ).create_request().getresponse()        
+        response = self.create_request().getresponse()        
         Response(
             self._configuration, 
             self._logger, 
