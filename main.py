@@ -21,13 +21,14 @@ class APIValidator:
             print('Failed to load initial configuration')
             exit()
         self.initialize_logger()
+        self.initialize_default_conf('headers')
 
     def load_configuration(self, _file_):
         """
         This will load the configuration specified by the file passed
         If the path exist then only the configuration is returned
         Configuration file should be in YAML format
-        All the configuration are loaded from  config folder
+        All the configuration are loaded from config folder
 
         Args:
             _file_: configuration file name to load.
@@ -40,6 +41,18 @@ class APIValidator:
             with open(self.__CONFIG_BASE_PATH + _file_, 'rt') as conf:
                 return yaml.safe_load(conf.read())
         return {}
+
+
+    def initialize_default_conf(self, key):
+        if key not in self.__configuration:
+            return {}
+        elif type(self.__configuration[key]) == str:
+            self.__configuration[key] = self.load_configuration(
+                self.__configuration[key]
+            )
+        elif type(self.__configuration[key]) != dict:
+            print('invalid format for '+ key)
+            exit()
 
     def initialize_logger(self):
         self.initialize_advance_logger()
@@ -54,7 +67,7 @@ class APIValidator:
         if 'logger' not in self.__configuration:
             return
 
-        config = self.load_configuration(self.__configuration['logger'])
+        config = self.initialize_default_conf('logger')
         if config:
             logging.config.dictConfig(config)
             self.__logger = logging.getLogger('main')

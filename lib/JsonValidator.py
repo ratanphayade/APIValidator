@@ -66,10 +66,10 @@ class JsonValidator():
             if input_data in required_data:
                 return;
             else:
-                print('invalid data ' + input_data)
+                print('invalid data ' + str(input_data))
                 exit()
         else:
             if re.search('^'+required_data+'$', str(input_data)):
                 return
             else:
-                print('data missmatch '+ input_data)
+                print('data missmatch '+ str(input_data))
