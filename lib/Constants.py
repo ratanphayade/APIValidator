@@ -12,7 +12,9 @@ class Constants():
         'x-www-form-urlencoded' : 'application/x-www-form-urlencoded'
     }
 
-    DEFAULTS_RESPONSE_FORMAT = 'json'
+    DEFAULT_CONTENT_TYPE = 'json'
+
+    DEFAULT_RESPONSE_FORMAT = 'json'
 
     REQUIRED_ATTRIBUTES = {
         'request':{                         # request attributes

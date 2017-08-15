@@ -8,14 +8,17 @@ class Test(RequestValidator):
             'protocol' : 'HTTPS',
             'dns' : 'api.coupondunia.in',
             'path' : '/timestamp',
-            'headers' : None,
+            'headers' : {
+                'custom_header': 'additional_header'
+            },
             'content_type': None
         },
         'response':{
             'content_type': 'json', # json, xml
             'expected_response' : {
                     'timestamp' : '\d+',
-            }
+            },
+            'headers': {}
         }
         # 'content_type' : 'application/json'
     }
@@ -24,6 +27,10 @@ class Test(RequestValidator):
     def __init__(self, configuration, logger):
         super().__init__(configuration, logger)
 
+    def additional_header(self):
+        return {
+            'test':'test'
+        }
 
 
 

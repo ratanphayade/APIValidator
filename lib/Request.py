@@ -3,7 +3,7 @@ import http.client
 
 class Request(Header):
 
-    __request_params = None
+    _request_params = None
 
     __connection = None
 
@@ -11,17 +11,19 @@ class Request(Header):
 
     _logger = None
 
+
     def __init__(self, configuration, logger, request_params):
-        self.__request_params = request_params
+        self._request_params = request_params
         self._configuration = configuration
-        self._logger = logger        
+        self._logger = logger    
+        super().__init__(self._request_params)    
 
 
     def init_request(self):
-        if self.__request_params['protocol'] == 'HTTPS':
-            self.__connection = http.client.HTTPSConnection(self.__request_params['dns'])
+        if self._request_params['protocol'] == 'HTTPS':
+            self.__connection = http.client.HTTPSConnection(self._request_params['dns'])
         else:
-            self.__connection = http.client.HTTPConnection(self.__request_params['dns'])
+            self.__connection = http.client.HTTPConnection(self._request_params['dns'])
         self.init_request_params()
 
 
@@ -33,9 +35,9 @@ class Request(Header):
     def create_request(self):
         self.init_request()
         try:
-            self.__connection.request(self.__request_params['method'], self.__request_params['path'],  self.payload, self.headers)
+            self.__connection.request(self._request_params['method'], self._request_params['path'],  self.payload, self.headers)
         except:
-            print('Request failed : ' + self.__request_params['method'] + ' ' + self.__request_params['dns']+self.__request_params['path'])
+            print('Request failed : ' + self._request_params['method'] + ' ' + self._request_params['dns']+self._request_params['path'])
             exit()
         return self.__connection
 
