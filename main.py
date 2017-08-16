@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import os
-import yaml
-import logging
+import os, sys, getopt
+import yaml, logging
 import logging.config
-from endpoints.Test import Test
-
+import pkgutil, importlib
+from endpoints import *
 
 class APIValidator:
     """
@@ -158,12 +157,78 @@ class APIValidator:
             logging.config.dictConfig(config)
             self.__logger = logging.getLogger(__name__)
 
+    def usage(self):
+        print('python3 main.py [options]')
+        exit()
+
+    def add_argumet_filter(self, scripts):
+        """
+        Options are evaliated and based on which the updated list of tests are generated
+
+        -r option will add the argument mentioned in the running list
+        -x will eleminate the test from the running list
+
+        Args:
+            scripts (list): list of test to run by default
+
+        Returns:
+            updated running list of tests
+        """
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], "r:x:", ["run=", "exclude="])
+        except getopt.GetoptError as err:
+            print(err)
+            self.usage()
+
+        new_list = []
+        for opt, arg in opts:
+            if opt in ('-h', '--help'):
+                self.usage()
+            elif opt in ('-r', '--run'):
+                new_list.append(arg)
+            elif opt in ('-x', '--exclude'):
+                scripts.remove(arg)
+        
+        if new_list:
+            return new_list
+        else:
+            return scripts
+    
+
+    def get_test_list(self):
+        """
+        Gives the list of test script to run
+
+        The priority of section is as below:
+            - This will default consider all the list 
+            - The list is taken from the config
+            - command line options are evaliated -r will run only that test -x will exclude the test from running config
+
+        Returns:
+            list of tests to run
+        """
+        self.initialize_configuration('tests')
+        if 'tests' in self.__configuration:
+            scripts = self.__configuration['tests']
+        else:
+            scripts = [name for _, name, _ in pkgutil.iter_modules(['endpoints'])]
+        
+        return self.add_argumet_filter(scripts)
+    
+
     def execute(self):
         """
         Executes the rules from the list given and validated for the required content
         """
-        Test(self.__configuration, logging).run()
-
+        test_list = self.get_test_list()
+        if not test_list:
+            print('No test scripts found')
+            exit()
+        for test in test_list:
+            try:                
+                getattr(globals()[test], test)(self.__configuration, logging).run()
+            except:
+                print('Nothoing like '+ test + ' found in endpoints')
 
 if __name__ == '__main__':
     """
