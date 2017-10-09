@@ -12,14 +12,15 @@ class Header(Validator):
     Attributes:
         payload (dict): Holds the payloads required for the current request
         headers (dict): Holds all the header information for the current request or response
-        __header_options (dict): Its the collection of all the header configuration for the current request or response
+        __header_options (dict): Its the collection of all the header
+            configuration for the current request or response
 
     """
     payload = None
     """
     dict: payload of the request
-    
-    Holds the request payload. 
+
+    Holds the request payload.
     It will be converted to the required format based on the request type.
     """
 
@@ -28,14 +29,14 @@ class Header(Validator):
     dict: header information of request or response
 
     Holds all the header details for request and response (based on type)
-    It can also be empty 
+    It can also be empty
     """
 
     __header_options = {}
     """
     dict: header option of the request or response
 
-    These header options will be taken from the rule file 
+    These header options will be taken from the rule file
     for both request and response based on its type.
     This will be used in all the places to identify the required field
     """
@@ -54,7 +55,7 @@ class Header(Validator):
         """
         self.__header_options = self.get_attribute(
             rule
-            ,'headers'
+            , 'headers'
             , {}
         )
 
@@ -73,7 +74,7 @@ class Header(Validator):
         if self.set_content_type() == 'json':
             self.payload = json.loads(json.dumps(payload))
         else:
-            self.payload = urlencode(payload)        
+            self.payload = urlencode(payload)
 
 
     def set_content_type(self):
@@ -86,8 +87,8 @@ class Header(Validator):
             , 'content_type'
             , self.DEFAULT_CONTENT_TYPE
         )
-        self.headers['content_type'] = self.CONTENT_TYPES[content_type]  
-        return content_type      
+        self.headers['content_type'] = self.CONTENT_TYPES[content_type]
+        return content_type
 
 
     def has_headers(self):
@@ -97,7 +98,6 @@ class Header(Validator):
         if self.__header_options is None:
             return False
         return True
-        
 
     def format_request_headers(self):
         """
@@ -115,7 +115,7 @@ class Header(Validator):
         """
         Adds additional header details specified in the rule file
         additional headers will be added only if custom_header is defined in the rules
-        custom_header will be a string which will idicate the method name 
+        custom_header will be a string which will idicate the method name
         which will calculate the custom header and return in dict form
         """
         custom_header_generator = self.get_attribute(
@@ -131,7 +131,7 @@ class Header(Validator):
     def execute_method(self, method_name):
         """
         Checks for the existance of method specidied in custom_header
-        if exist calls the method and returns the data 
+        if exist calls the method and returns the data
 
         Args:
             method_name (str): custom method to be executed
@@ -146,7 +146,9 @@ class Header(Validator):
         try:
             method = getattr(self, method_name)
         except AttributeError:
-            raise NotImplementedError("Class `{}` does not implement `{}`".format(self.__class__.__name__, method_name))
+            raise NotImplementedError(
+                "Class `{}` does not implement `{}`".format(self.__class__.__name__, method_name)
+            )
         return method()
 
     def add_custom_headers(self, custom_headers):
@@ -156,7 +158,7 @@ class Header(Validator):
         data type should be dict in order to contunue with validation
         """
         if type(custom_headers) is not dict:
-            print('header should be dict type')
+            print('header should be dictionary type')
             exit()
         self.headers.update(custom_headers)
             
