@@ -149,6 +149,10 @@ We can also use the command options to execute selected test or not execute sele
     `-r | --run` can be used to specify the rule to execute.
     `-x | '--exclude'` can be used to exclude a rule from the list.
     
+Example :
+```
+python3 main.py -r Test -x Temp
+```
 
 #TODO
 - Add Support to validate the JSON reponse if it just contains the list of strings.
