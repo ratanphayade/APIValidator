@@ -44,7 +44,7 @@ If `logger` will have the logging configuration details. This can be used to con
 
 This can be used to set a common headers to all the requests. Its a simple list of data which has to sent in headers.
 
-- tests.conf
+- run.conf
 
 This will contain the list of request rule files which has to be tested by default.
 
