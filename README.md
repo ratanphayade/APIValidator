@@ -138,10 +138,10 @@ python3 mian.py
 ```
 
 ## Running all the test
-If the `tests.conf` doesn't exist then all the rules will get executed.
+If the `tests` doesn't exist in the `main.conf` then all the rules will get executed.
 
 ## Running only few tests 
-If have to run only certain number of tests repeatedly then we can used `tests.conf` and specify the list of rules to execute.
+If have to run only certain number of tests repeatedly then we can used `tests` and specify the list of rules to execute.
 
 ## Run Specific test
 We can also use the command options to execute selected test or not execute selected test. 
