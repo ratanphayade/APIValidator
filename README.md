@@ -130,6 +130,29 @@ The data here can be in the `RegEx` format in the format is known. If the data s
 Only one element sample is needed to validate the all the array elements.
 
 
+#Running the Test
+
+To execute the sctipt run the command:
+```
+python3 mian.py
+```
+
+##Running all the test
+If the `tests.conf` doesn't exist then all the rules will get executed.
+
+##Running only few tests 
+If have to run only certain number of tests repeatedly then we can used `tests.conf` and specify the list of rules to execute.
+
+##Run Specific test
+We can also use the command options to execute selected test or not execute selected test. 
+- Options 
+    `-r | --run` can be used to specify the rule to execute.
+    `-x | '--exclude'` can be used to exclude a rule from the list.
+    
+
+#TODO
+- Add Support to validate the JSON reponse if it just contains the list of strings.
+- Support for XML reponse validation.
 
 
 
