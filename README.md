@@ -76,12 +76,14 @@ rules variable will hold the rules and it has 2 sections.
         'response':{
             'content_type': 'json', # json
             'expected_response' : {
-                    'timestamp' : '\d+',
+                    '<json_key>' : '<expected_data_in_regex>',
             },
             'headers': {}
         }
     }
 ```
+- <json_key> : attribute in your response.
+- <expected_data_in_regex> : data format expected in json key in regular expression. In case of no data validation, it should be `None`.
 
 ## Request
 
